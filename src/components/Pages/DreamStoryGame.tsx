@@ -581,18 +581,6 @@ const DreamStoryGame: React.FC<DreamStoryGameProps> = ({ onBack }) => {
     }
   };
 
-  const getAlexSprite = () => {
-    switch (alexAnimation) {
-      case 'sleep': return '🛌';
-      case 'eat': return '🍽️';
-      case 'exercise': return '🏋️';
-      case 'relax': return '📺';
-      case 'drinkWater': return '💧';
-      case 'shower': return '🚿';
-      default: return '🧍';
-    }
-  };
-
   const formatGameTime = () => {
     return gameState.gameTime.toLocaleTimeString('pt-BR', { 
       hour: '2-digit', 
@@ -646,7 +634,7 @@ const DreamStoryGame: React.FC<DreamStoryGameProps> = ({ onBack }) => {
   const currentRoom = getCurrentRoom();
 
   return (
-    <div className={`h-screen flex flex-col transition-colors duration-300 overflow-hidden isometric-container ${
+    <div className={`h-screen flex flex-col transition-colors duration-300 overflow-hidden pixel-game-container ${
       isDark ? 'bg-slate-950' : 'bg-gradient-to-br from-white via-emerald-50/80 to-emerald-100/60'
     }`}>
       {/* Header */}
@@ -790,140 +778,54 @@ const DreamStoryGame: React.FC<DreamStoryGameProps> = ({ onBack }) => {
 
         {/* Game Area */}
         <div className="flex-1 relative overflow-hidden">
-          {/* Isometric Room Container */}
+          {/* 2D Platform Room Container */}
           <div className={`absolute inset-0 transition-all duration-500 overflow-hidden room-transition room-${currentRoom.id}`}>
-            <div className="isometric-room w-full h-full relative">
-              {/* Isometric Floor */}
-              <div className="isometric-floor"></div>
+            <div className="pixel-room w-full h-full relative">
+              {/* Room Background */}
+              <div className={`pixel-room-bg room-bg-${currentRoom.id}`}></div>
               
-              {/* Isometric Walls */}
-              <div className="isometric-wall-back"></div>
-              <div className="isometric-wall-left"></div>
-              <div className="isometric-wall-right"></div>
-              
-              {/* Lighting Effect */}
-              <div className="isometric-lighting"></div>
-              
-              {/* Isometric Objects */}
-              <div className={`isometric-object isometric-bed ${gameState.dailyActions.sleep ? 'used' : 'available'}`}
+              {/* Interactive Objects */}
+              <div className={`pixel-object pixel-bed ${gameState.dailyActions.sleep ? 'used' : 'available'}`}
                    onClick={() => handleActionClick({ id: 'sleep', name: 'Cama', icon: Bed, position: { x: 70, y: 60 }, description: 'Dormir' })}>
-                <div className="isometric-shadow"></div>
-                {gameState.dailyActions.sleep && <div className="isometric-completion">✓</div>}
+                {gameState.dailyActions.sleep && <div className="pixel-completion">✓</div>}
               </div>
               
-              <div className={`isometric-object isometric-sofa ${gameState.dailyActions.relax ? 'used' : 'available'}`}
+              <div className={`pixel-object pixel-sofa ${gameState.dailyActions.relax ? 'used' : 'available'}`}
                    onClick={() => handleActionClick({ id: 'relax', name: 'Sofá', icon: Tv, position: { x: 30, y: 50 }, description: 'Relaxar' })}>
-                <div className="isometric-shadow"></div>
-                {gameState.dailyActions.relax && <div className="isometric-completion">✓</div>}
+                {gameState.dailyActions.relax && <div className="pixel-completion">✓</div>}
               </div>
               
-              <div className={`isometric-object isometric-table ${gameState.dailyActions.eat ? 'used' : 'available'}`}
+              <div className={`pixel-object pixel-table ${gameState.dailyActions.eat ? 'used' : 'available'}`}
                    onClick={() => handleActionClick({ id: 'eat', name: 'Mesa', icon: Utensils, position: { x: 50, y: 40 }, description: 'Comer' })}>
-                <div className="isometric-shadow"></div>
-                {gameState.dailyActions.eat && <div className="isometric-completion">✓</div>}
+                {gameState.dailyActions.eat && <div className="pixel-completion">✓</div>}
               </div>
               
-              <div className={`isometric-object isometric-water ${gameState.dailyActions.drinkWater ? 'used' : 'available'}`}
+              <div className={`pixel-object pixel-water ${gameState.dailyActions.drinkWater ? 'used' : 'available'}`}
                    onClick={() => handleActionClick({ id: 'drinkWater', name: 'Água', icon: Droplets, position: { x: 80, y: 30 }, description: 'Beber água' })}>
-                <div className="isometric-shadow"></div>
-                {gameState.dailyActions.drinkWater && <div className="isometric-completion">✓</div>}
+                {gameState.dailyActions.drinkWater && <div className="pixel-completion">✓</div>}
               </div>
               
-              <div className={`isometric-object isometric-exercise ${gameState.dailyActions.exercise ? 'used' : 'available'}`}
+              <div className={`pixel-object pixel-exercise ${gameState.dailyActions.exercise ? 'used' : 'available'}`}
                    onClick={() => handleActionClick({ id: 'exercise', name: 'Equipamentos', icon: Dumbbell, position: { x: 60, y: 50 }, description: 'Exercitar-se' })}>
-                <div className="isometric-shadow"></div>
-                {gameState.dailyActions.exercise && <div className="isometric-completion">✓</div>}
+                {gameState.dailyActions.exercise && <div className="pixel-completion">✓</div>}
               </div>
               
-              <div className={`isometric-object isometric-shower ${gameState.dailyActions.shower ? 'used' : 'available'}`}
+              <div className={`pixel-object pixel-shower ${gameState.dailyActions.shower ? 'used' : 'available'}`}
                    onClick={() => handleActionClick({ id: 'shower', name: 'Chuveiro', icon: Bath, position: { x: 40, y: 60 }, description: 'Tomar banho' })}>
-                <div className="isometric-shadow"></div>
-                {gameState.dailyActions.shower && <div className="isometric-completion">✓</div>}
+                {gameState.dailyActions.shower && <div className="pixel-completion">✓</div>}
               </div>
               
-              {/* DECORAÇÕES DA SALA DE ESTAR */}
-              <div className="isometric-bookshelf">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-floor-lamp">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-window"></div>
-              <div className="isometric-wall-art"></div>
-              <div className="isometric-wall-clock"></div>
-              <div className="isometric-plant">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-rug"></div>
-              
-              {/* DECORAÇÕES DO QUARTO */}
-              <div className="isometric-wardrobe">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-chair">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-vanity">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-bedside-lamp">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-bedroom-window"></div>
-              <div className="isometric-bedroom-rug"></div>
-              <div className="isometric-laundry-basket">
-                <div className="isometric-shadow"></div>
-              </div>
-              
-              {/* DECORAÇÕES DO BANHEIRO */}
-              <div className="isometric-towel-rack">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-sink">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-mirror"></div>
-              <div className="isometric-bathroom-rug"></div>
-              <div className="isometric-trash-bin">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-bathroom-window"></div>
-              <div className="isometric-wall-frame"></div>
-              
-              {/* DECORAÇÕES DA COZINHA */}
-              <div className="isometric-cutting-board">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-spice-shelf">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-fridge">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-coffee-station">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-trash-recycle">
-                <div className="isometric-shadow"></div>
-              </div>
-              
-              {/* DECORAÇÕES DA ACADEMIA */}
-              <div className="isometric-free-weights">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-bench">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-gym-mirror"></div>
-              <div className="isometric-yoga-mat"></div>
-              <div className="isometric-water-bottle">
-                <div className="isometric-shadow"></div>
-              </div>
-              <div className="isometric-ceiling-fan"></div>
-              <div className="isometric-motivational-poster"></div>
-              <div className="isometric-speaker">
-                <div className="isometric-shadow"></div>
-              </div>
+              {/* Room Decorations */}
+              <div className="pixel-decoration pixel-bookshelf"></div>
+              <div className="pixel-decoration pixel-lamp"></div>
+              <div className="pixel-decoration pixel-window"></div>
+              <div className="pixel-decoration pixel-plant"></div>
+              <div className="pixel-decoration pixel-rug"></div>
+              <div className="pixel-decoration pixel-wardrobe"></div>
+              <div className="pixel-decoration pixel-mirror"></div>
+              <div className="pixel-decoration pixel-fridge"></div>
+              <div className="pixel-decoration pixel-weights"></div>
+              <div className="pixel-decoration pixel-towels"></div>
             </div>
           </div>
 
@@ -951,11 +853,11 @@ const DreamStoryGame: React.FC<DreamStoryGameProps> = ({ onBack }) => {
           </button>
 
           {/* Alex Character */}
-          <div className="isometric-character">
+          <div className="pixel-character">
             <div className="text-center relative">
-              <div className={`alex-sprite-isometric alex-${alexAnimation} alex-idle-iso relative ${alexAnimation === 'sleep' ? 'sleeping' : ''}`}>
+              <div className={`alex-sprite-2d alex-${alexAnimation} alex-idle-2d relative ${alexAnimation === 'sleep' ? 'sleeping' : ''}`}>
                 {/* Character shadow */}
-                <div className="character-shadow absolute bottom-0 left-1/2 transform -translate-x-1/2"></div>
+                <div className="character-shadow-2d absolute bottom-0 left-1/2 transform -translate-x-1/2"></div>
               </div>
               <div className={`text-xs font-bold px-2 py-1 rounded-full ${
                 isDark ? 'bg-slate-800 text-white' : 'bg-white text-emerald-900'
